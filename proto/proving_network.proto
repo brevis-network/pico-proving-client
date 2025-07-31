@@ -9,6 +9,6 @@ service ProvingNetwork {
   rpc ProveTask(ProveTaskRequest) returns(ProveTaskResponse);
 }
 
-message ProveTaskRequest { optional bytes input_buffer = 1; }
+message ProveTaskRequest { repeated string inputs = 1; }
 
 message ProveTaskResponse { string task_id = 1; }

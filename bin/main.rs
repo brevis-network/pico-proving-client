@@ -16,8 +16,8 @@ struct Args {
     #[clap(long, default_value = "prove-task", help = "Command")]
     pub cmd: Command,
 
-    #[clap(long, default_value = "fixtures/sample.bin", help = "Input file path")]
-    input_file: PathBuf,
+    #[clap(long, default_values = &["fixtures/input_1.bin", "fixtures/input_2.bin"])]
+    input_files: Vec<PathBuf>,
 
     #[clap(
         long,
@@ -52,8 +52,12 @@ async fn main() -> Result<()> {
 
     match cfg.cmd {
         Command::ProveTask => {
-            let input_buffer = Some(fs::read(&cfg.input_file)?);
-            let req = ProveTaskRequest { input_buffer };
+            let inputs = cfg
+                .input_files
+                .iter()
+                .map(|path| fs::read_to_string(path).unwrap())
+                .collect();
+            let req = ProveTaskRequest { inputs };
             let res = client.prove_task(req).await?;
             let task_id = &res.get_ref().task_id;
             println!("processing task-{task_id}...");
