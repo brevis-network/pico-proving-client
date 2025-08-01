@@ -16,7 +16,7 @@ struct Args {
     #[clap(long, default_value = "prove-task", help = "Command")]
     pub cmd: Command,
 
-    #[clap(long, default_values = &["fixtures/input_1.bin", "fixtures/input_2.bin"])]
+    #[clap(long, default_values = &["fixtures/input.bin"])]
     input_files: Vec<PathBuf>,
 
     #[clap(
